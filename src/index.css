@@ -1,0 +1,186 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@theme {
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol";
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+}
+
+@layer utilities {
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+:root {
+  --bg-sidebar: #E8E5DD;
+  --bg-app: #F2EFEB;
+  --bg-panel: #F2EFEB;
+  --bg-card: #E4E0D6;
+  --bg-card-hover: #D7D2C5;
+  --bg-card-active: #CCC6B5;
+
+  --text-primary: #2C2A26;
+  --text-secondary: #48453F;
+  --text-tertiary: #69655C;
+  --text-muted: #8B867B;
+  --text-faint: #A19B8E;
+  --text-very-faint: #B5AE9F;
+  --text-bright: #1A1816;
+  --text-inverted: #F2EFEB;
+
+  --border-light: #DCD8CB;
+  --border-base: #C2BDAF;
+
+  /* Nav rail accents — derived from the sidebar surface so the rail reads correctly
+     whether the sidebar is light (light theme) or near-black (dark theme). */
+  --nav-active-bg: rgba(0, 0, 0, 0.07);
+  --nav-hover-bg: rgba(0, 0, 0, 0.035);
+  --nav-border: rgba(0, 0, 0, 0.08);
+}
+
+.dark {
+  --bg-sidebar: #141414;
+  --bg-app: #191919;
+  --bg-panel: #202020;
+  --bg-card: #2a2a2a;
+  --bg-card-hover: #333333;
+  --bg-card-active: #404040;
+
+  --text-primary: #ebebeb;
+  --text-secondary: #d4d4d4;
+  --text-tertiary: #9b9b9b;
+  --text-muted: #737373;
+  --text-faint: #525252;
+  --text-very-faint: #404040;
+  --text-bright: #ffffff;
+  --text-inverted: #191919;
+
+  --border-light: #2f2f2f;
+  --border-base: #404040;
+
+  --nav-active-bg: rgba(255, 255, 255, 0.12);
+  --nav-hover-bg: rgba(255, 255, 255, 0.06);
+  --nav-border: rgba(255, 255, 255, 0.08);
+}
+
+body {
+  background-color: var(--bg-app);
+  color: var(--text-primary);
+  position: relative;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.15;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+.dark body::before {
+  opacity: 0.05;
+}
+
+/* Visible keyboard focus as a safety net on top of explicit Tailwind focus rings. */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--border-base);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Markdown preview — map the typography plugin's palette onto our theme variables
+   so headings, code, links and tables follow light/dark mode like everything else. */
+.note-prose {
+  color: var(--text-secondary);
+}
+.note-prose :where(h1, h2, h3, h4, h5, h6) {
+  color: var(--text-primary);
+}
+.note-prose :where(strong) {
+  color: var(--text-primary);
+}
+.note-prose :where(a) {
+  color: var(--text-primary);
+  text-decoration-color: var(--border-base);
+  text-underline-offset: 2px;
+}
+.note-prose :where(code):not(:where(pre code)) {
+  background: var(--bg-card);
+  color: var(--text-primary);
+  padding: 0.15em 0.4em;
+  border-radius: 0.35em;
+  font-weight: 600;
+  font-size: 0.85em;
+}
+.note-prose :where(code):not(:where(pre code))::before,
+.note-prose :where(code):not(:where(pre code))::after {
+  content: "";
+}
+.note-prose pre {
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: 0.75rem;
+}
+.note-prose blockquote {
+  border-left-color: var(--border-base);
+  color: var(--text-tertiary);
+  font-style: normal;
+}
+.note-prose hr {
+  border-color: var(--border-light);
+}
+.note-prose thead {
+  border-bottom-color: var(--border-base);
+}
+.note-prose th {
+  color: var(--text-primary);
+}
+.note-prose tbody tr {
+  border-bottom-color: var(--border-light);
+}
+.note-prose li::marker {
+  color: var(--text-faint);
+}
+.note-prose li.task-list-item {
+  list-style: none;
+  margin-left: -1.5em;
+}
+.note-prose img {
+  border-radius: 0.75rem;
+  border: 1px solid var(--border-light);
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes pop-in {
+  from { opacity: 0; transform: scale(0.96) translateY(4px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+@keyframes toast-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in { animation: fade-in 0.15s ease-out; }
+.animate-pop-in { animation: pop-in 0.18s cubic-bezier(0.16, 1, 0.3, 1); }
+.animate-toast-in { animation: toast-in 0.2s cubic-bezier(0.16, 1, 0.3, 1); }
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-in, .animate-pop-in, .animate-toast-in {
+    animation: none;
+  }
+}
